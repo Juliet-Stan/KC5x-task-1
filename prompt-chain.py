@@ -92,20 +92,3 @@ async def run_prompt_chain(customer_query):
     outputs.append(response)
 
     return outputs
-async def main():
-    """Main function to run the banking support system."""
-    print("Welcome to the Intelligent Bank Support System\n")
-    customer_query = input("Please enter your query: ")
-
-    print("\nProcessing your request, please wait...\n")
-
-    result = await run_prompt_chain(customer_query)
-
-    print("----- Results -----\n")
-    for i, step in enumerate(result, 1):
-        print(f"Response {i}: {step}\n")
-
-
-# Run the application
-if __name__ == "__main__":
-    asyncio.run(main())
