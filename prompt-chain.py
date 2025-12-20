@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
-print("API Key:", API_KEY)
-
 BASE_URL = "https://openrouter.ai/api/v1"
 MODEL = "openai/gpt-4o-mini"
 # Helper function
