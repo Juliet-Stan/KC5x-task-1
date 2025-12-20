@@ -1,4 +1,3 @@
-
 import os
 import asyncio
 import aiohttp
@@ -8,6 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
+print("API Key:", API_KEY)
+
 BASE_URL = "https://openrouter.ai/api/v1"
 MODEL = "openai/gpt-4o-mini"
 # Helper function
@@ -92,3 +93,10 @@ async def run_prompt_chain(customer_query):
     outputs.append(response)
 
     return outputs
+
+if __name__ == "__main__":
+    customer_query = input("Enter your customer query: ")
+    outputs = asyncio.run(run_prompt_chain(customer_query))
+    
+    for i, output in enumerate(outputs, 1):
+        print(f"Step {i} output:\n{output}\n")
