@@ -1,46 +1,25 @@
 import os
 import asyncio
-import aiohttp
 from dotenv import load_dotenv
+from google import genai
 
 # Load environment variables
 load_dotenv()
 
-API_KEY = os.getenv("OPENROUTER_API_KEY")
-BASE_URL = "https://openrouter.ai/api/v1"
-MODEL = "openai/gpt-4o-mini"
+API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=API_KEY)
 # Helper function
 async def call_openrouter(prompt):
     """Call OpenRouter API with the given prompt."""
     try:
-        async with aiohttp.ClientSession() as session:
-            headers = {
-                "Authorization": f"Bearer {API_KEY}",
-                "Content-Type": "application/json",
-            }
-            
-            payload = {
-                "model": MODEL,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.5,
-                "max_tokens": 200,
-            }
-            
-            async with session.post(
-                f"{BASE_URL}/chat/completions",
-                json=payload,
-                headers=headers
-            ) as response:
-                if response.status != 200:
-                    error_data = await response.text()
-                    print(f"Error calling OpenRouter: {error_data}")
-                    return "Error: Unable to process this step."
-                
-                data = await response.json()
-                return data["choices"][0]["message"]["content"].strip()
+        response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+        )
+        return str(response.text).strip()
                 
     except Exception as error:
-        print(f"Error calling OpenRouter: {str(error)}")
+        print(f"Error calling Gemini: {str(error)}")
         return "Error: Unable to process this step."
 # Run the chain
 async def run_prompt_chain(customer_query):
